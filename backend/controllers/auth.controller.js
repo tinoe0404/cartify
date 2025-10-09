@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { redis } from "../lib/redis.js";
 import dotenv from "dotenv";
 
+
 //creating the tokens 
 const generateTokens = (userId) => {
   const accessToken = jwt.sign({userId}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m',});
@@ -137,6 +138,14 @@ export const refreshToken = async (req, res) => {
 		res.json({ message: "Token refreshed successfully" });
 	} catch (error) {
 		console.log("Error in refreshToken controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+//getProfile function
+export const getProfile = async (req, res) => {
+	try {
+		res.json(req.user);
+	} catch (error) {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
