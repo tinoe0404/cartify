@@ -2,6 +2,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/",getAllProducts);
+router.get("/", protectRoute, adminRoute, getAllProducts);
 
 export default router;
