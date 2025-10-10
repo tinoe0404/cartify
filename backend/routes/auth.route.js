@@ -1,6 +1,5 @@
 import express from 'express';
 import { signup, login, logout, refreshToken, getProfile } from '../controllers/auth.controller.js';
-import { get } from 'mongoose';
 
 const router = express.Router();
 

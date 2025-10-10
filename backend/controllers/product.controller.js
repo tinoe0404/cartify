@@ -1,7 +1,7 @@
 import { redis } from "../lib/redis.js";
-import cloudinary from "../lib/cloudinary.js";
 import Product from "../models/product.model.js";
 
+//creating a getAllProducts function
 export const getAllProducts = async (req, res) => {
 	try {
 		const products = await Product.find({}); // find all products
@@ -11,3 +11,4 @@ export const getAllProducts = async (req, res) => {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
+
