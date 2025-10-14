@@ -4,10 +4,25 @@ import toast from "react-hot-toast";
 import axios from "../lib/axios";
 
 
-const useProductStore = () => {
-  return (
-    <div>useProductStore</div>
-  )
-}
+export const useProductStore = create((set) => ({
+	products: [],
+	loading: false,
 
-export default useProductStore
+	setProducts: (products) => set({ products }),
+
+    // create createProduct function 
+	createProduct: async (productData) => {
+		set({ loading: true });
+		try {
+			const res = await axios.post("/products", productData);
+			set((prevState) => ({
+				products: [...prevState.products, res.data],
+				loading: false,
+			}));
+		} catch (error) {
+			toast.error(error.response.data.error);
+			set({ loading: false });
+		}
+	},
+	
+}));

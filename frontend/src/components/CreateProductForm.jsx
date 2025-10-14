@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader } from "lucide-react";
+import { useProductStore } from '../stores/useProductStore';
 
 
 const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
@@ -15,11 +16,11 @@ const CreateProductForm = () => {
 		image: "",
 	});
 
-	const loading = false;
+    const { createProduct, loading} = useProductStore();
 
 	 const handleSubmit = (e) => {
 		e.preventDefault();
-        console.log(newProduct)
+        createProduct(newProduct);
      };
     /*
 		try {
