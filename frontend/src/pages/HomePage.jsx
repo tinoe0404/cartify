@@ -12,11 +12,7 @@ const categories = [
 	{ href: "/bags", name: "Bags", imageUrl: "/bags.jpg" },
 ];
 const HomePage = () => {
-	const { fetchFeaturedProducts, products, isLoading } = useProductStore();
-
-	useEffect(() => {
-		fetchFeaturedProducts();
-	}, [fetchFeaturedProducts]);
+	const { fetchFeaturedProducts, products } = true;
 
 	return (
 		<div className='relative min-h-screen text-white overflow-hidden'>
@@ -34,7 +30,7 @@ const HomePage = () => {
 					))}
 				</div>
 
-				{!isLoading && products.length > 0 && <FeaturedProducts featuredProducts={products} />}
+					
 			</div>
 		</div>
 	);
