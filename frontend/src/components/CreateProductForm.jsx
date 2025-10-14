@@ -18,18 +18,15 @@ const CreateProductForm = () => {
 
     const { createProduct, loading} = useProductStore();
 
-	 const handleSubmit = (e) => {
-		e.preventDefault();
-        createProduct(newProduct);
-     };
-    /*
+	 const handleSubmit = async (e) => {
+		
 		try {
 			await createProduct(newProduct);
 			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
 		} catch {
 			console.log("error creating a product");
 		}
-	};*/
+
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
