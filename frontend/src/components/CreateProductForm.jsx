@@ -1,9 +1,7 @@
-import React from 'react'
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader } from "lucide-react";
-import { useProductStore } from '../stores/useProductStore';
-
+import { useProductStore } from "../stores/useProductStore";
 
 const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
 
@@ -16,17 +14,17 @@ const CreateProductForm = () => {
 		image: "",
 	});
 
-    const { createProduct, loading} = useProductStore();
+	const { createProduct, loading } = useProductStore();
 
-	 const handleSubmit = async (e) => {
-		
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 		try {
 			await createProduct(newProduct);
 			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
 		} catch {
 			console.log("error creating a product");
 		}
-
+	};
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
@@ -161,6 +159,4 @@ const CreateProductForm = () => {
 		</motion.div>
 	);
 };
-};
-
 export default CreateProductForm;
