@@ -7,6 +7,7 @@ import { useUserStore } from '../stores/useUserStore'
 const ProductCard = ({product}) => {
 
     const { user } = useUserStore();
+    const { addToCart } = useCartStore();
 
    const handleAddToCart = () => {
 		if (!user) {
