@@ -26,6 +26,13 @@ export const useCartStore = create((set, get) => ({
 		}
 	},
 
+	// create removeFromCart function
+	removeFromCart: async (productId) => {
+		await axios.delete(`/cart`, { data: { productId } });
+		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
+		get().calculateTotals();
+	},
+
     // create addToCart function 
     addToCart: async (product) => {
 		try {
