@@ -7,6 +7,9 @@ import PeopleAlsoBought from "../components/PeopleAlsoBought";
 import OrderSummary from "../components/OrderSummary";
 import GiftCouponCard from "../components/GiftCouponCard";
 import { create } from 'zustand';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+
 
 export const useCartStore = create((set, get) => ({
 	cart: [],
@@ -22,7 +25,8 @@ export const useCartStore = create((set, get) => ({
 			get().calculateTotals();
 		} catch (error) {
 			set({ cart: [] });
-			toast.error(error.response.data.message || "An error occurred");
+			toast.error(error?.response?.data?.message || "An error occurred");
+
 		}
 	},
 
@@ -52,6 +56,20 @@ export const useCartStore = create((set, get) => ({
 		} catch (error) {
 			toast.error(error.response.data.message || "An error occurred");
 		}
+	},
+
+	// create updateQuantity function
+	updateQuantity: async (productId, quantity) => {
+		if (quantity === 0) {
+			get().removeFromCart(productId);
+			return;
+		}
+
+		await axios.put(`/cart/${productId}`, { quantity });
+		set((prevState) => ({
+			cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
+		}));
+		get().calculateTotals();
 	},
 
     // create calculateTotals fucntion 
