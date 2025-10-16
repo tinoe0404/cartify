@@ -14,7 +14,7 @@ import { useCartStore } from "./stores/useCartStore"
 
 
 function App() {
-  const { user, checkAuth } = useUserStore();
+  const { user, checkAuth, checkingAuth } = useUserStore();
   const { getCartItems} = useCartStore();
 	
 	useEffect(() => {
@@ -22,10 +22,11 @@ function App() {
 	}, [checkAuth]);
 
   useEffect(() => {
-    getCartItems()
-  },[getCartItems]);
+    if(!user) return ;
+    getCartItems();
+  },[getCartItems, user]);
  
-  // if (checkingAuth) return  < LoadingSpinner/>
+  if (checkingAuth) return  < LoadingSpinner/>
 
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
