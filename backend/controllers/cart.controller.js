@@ -1,6 +1,5 @@
 import Product from "../models/product.model.js";
 
-//create getCartProducts controller function 
 export const getCartProducts = async (req, res) => {
 	try {
 		const products = await Product.find({ _id: { $in: req.user.cartItems } });
@@ -18,7 +17,6 @@ export const getCartProducts = async (req, res) => {
 	}
 };
 
-// create addToCart controller function 
 export const addToCart = async (req, res) => {
 	try {
 		const { productId } = req.body;
@@ -39,7 +37,6 @@ export const addToCart = async (req, res) => {
 	}
 };
 
-// create removeAllFromCart controller function 
 export const removeAllFromCart = async (req, res) => {
 	try {
 		const { productId } = req.body;
@@ -56,7 +53,6 @@ export const removeAllFromCart = async (req, res) => {
 	}
 };
 
-// create updateQuantity controller function
 export const updateQuantity = async (req, res) => {
 	try {
 		const { id: productId } = req.params;
