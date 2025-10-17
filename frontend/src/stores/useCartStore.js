@@ -39,6 +39,13 @@ export const useCartStore = create((set, get) => ({
 			toast.error(error.response?.data?.message || "Failed to apply coupon");
 		}
 	},
+
+	// create removeCoupon function
+	removeCoupon: () => {
+		set({ coupon: null, isCouponApplied: false });
+		get().calculateTotals();
+		toast.success("Coupon removed");
+	},
 	
 	// create getCartItems function
     getCartItems: async () => {

@@ -7,7 +7,7 @@ const GiftCouponCard = () => {
 
   const [userInputCode, setUserInputCode] = useState('');
 
-  const {coupon, isCouponApplied} = useCartStore(); 
+  const {coupon, isCouponApplied, applyCoupon} = useCartStore(); 
 
   const handleApplyCoupon = () => {
     console.log(userInputCode);
