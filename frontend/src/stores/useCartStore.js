@@ -27,6 +27,18 @@ export const useCartStore = create((set, get) => ({
 			console.error("Error fetching coupon:", error);
 		}
 	},
+
+	// create applyCoupon function
+	applyCoupon: async (code) => {
+		try {
+			const response = await axios.post("/coupons/validate", { code });
+			set({ coupon: response.data, isCouponApplied: true });
+			get().calculateTotals();
+			toast.success("Coupon applied successfully");
+		} catch (error) {
+			toast.error(error.response?.data?.message || "Failed to apply coupon");
+		}
+	},
 	
 	// create getCartItems function
     getCartItems: async () => {
