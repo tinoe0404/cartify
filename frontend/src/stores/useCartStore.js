@@ -85,5 +85,10 @@ export const useCartStore = create((set, get) => ({
 
 		set({ subtotal, total });
 	},
+
+	// create clearCart function
+	clearCart: async () => {
+		set({ cart: [], coupon: null, total: 0, subtotal: 0 });
+	},
 	
 }));
