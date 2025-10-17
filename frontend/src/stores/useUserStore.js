@@ -7,7 +7,6 @@ export const useUserStore = create((set, get) => ({
 	loading: false,
 	checkingAuth: true,
 
-    // Logout function
 	signup: async ({ name, email, password, confirmPassword }) => {
 		set({ loading: true });
 
@@ -24,8 +23,7 @@ export const useUserStore = create((set, get) => ({
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
-    // Login function
-    login: async (email, password) => {
+	login: async (email, password) => {
 		set({ loading: true });
 
 		try {
@@ -38,8 +36,7 @@ export const useUserStore = create((set, get) => ({
 		}
 	},
 
-    // Logout function
-    logout: async () => {
+	logout: async () => {
 		try {
 			await axios.post("/auth/logout");
 			set({ user: null });
@@ -48,8 +45,7 @@ export const useUserStore = create((set, get) => ({
 		}
 	},
 
-    // checkAuth function
-    checkAuth: async () => {
+	checkAuth: async () => {
 		set({ checkingAuth: true });
 		try {
 			const response = await axios.get("/auth/profile");
@@ -59,8 +55,4 @@ export const useUserStore = create((set, get) => ({
 			set({ checkingAuth: false, user: null });
 		}
 	},
-
-	
-
-	
 }));

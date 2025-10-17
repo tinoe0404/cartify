@@ -10,7 +10,6 @@ export const useProductStore = create((set) => ({
 
 	setProducts: (products) => set({ products }),
 
-    // create createProduct function 
 	createProduct: async (productData) => {
 		set({ loading: true });
 		try {
@@ -24,9 +23,7 @@ export const useProductStore = create((set) => ({
 			set({ loading: false });
 		}
 	},
-
-    // create fetchAllProducts function
-    fetchAllProducts: async () => {
+	fetchAllProducts: async () => {
 		set({ loading: true });
 		try {
 			const response = await axios.get("/products");
@@ -36,8 +33,6 @@ export const useProductStore = create((set) => ({
 			toast.error(error.response.data.error || "Failed to fetch products");
 		}
 	},
-
-	// create fetchProductsByCategory function 
 	fetchProductsByCategory: async (category) => {
 		set({ loading: true });
 		try {
@@ -48,9 +43,20 @@ export const useProductStore = create((set) => ({
 			toast.error(error.response.data.error || "Failed to fetch products");
 		}
 	},
-
-    // create toggleFeaturedProduct function 
-    toggleFeaturedProduct: async (productId) => {
+	deleteProduct: async (productId) => {
+		set({ loading: true });
+		try {
+			await axios.delete(`/products/${productId}`);
+			set((prevProducts) => ({
+				products: prevProducts.products.filter((product) => product._id !== productId),
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+			toast.error(error.response.data.error || "Failed to delete product");
+		}
+	},
+	toggleFeaturedProduct: async (productId) => {
 		set({ loading: true });
 		try {
 			const response = await axios.patch(`/products/${productId}`);
@@ -66,20 +72,4 @@ export const useProductStore = create((set) => ({
 			toast.error(error.response.data.error || "Failed to update product");
 		}
 	},
-
-    // create deleteProduct function  
-    deleteProduct: async (productId) => {
-		set({ loading: true });
-		try {
-			await axios.delete(`/products/${productId}`);
-			set((prevProducts) => ({
-				products: prevProducts.products.filter((product) => product._id !== productId),
-				loading: false,
-			}));
-		} catch (error) {
-			set({ loading: false });
-			toast.error(error.response.data.error || "Failed to delete product");
-		}
-	},
-	
 }));

@@ -1,8 +1,7 @@
 import { redis } from "../lib/redis.js";
-import Product from "../models/product.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import Product from "../models/product.model.js";
 
-//creating a getAllProducts function
 export const getAllProducts = async (req, res) => {
 	try {
 		const products = await Product.find({}); // find all products
@@ -13,7 +12,6 @@ export const getAllProducts = async (req, res) => {
 	}
 };
 
-//creating the getFeaturedProducts function
 export const getFeaturedProducts = async (req, res) => {
 	try {
 		let featuredProducts = await redis.get("featured_products");
@@ -31,6 +29,7 @@ export const getFeaturedProducts = async (req, res) => {
 		}
 
 		// store in redis for future quick access
+
 		await redis.set("featured_products", JSON.stringify(featuredProducts));
 
 		res.json(featuredProducts);
@@ -40,7 +39,6 @@ export const getFeaturedProducts = async (req, res) => {
 	}
 };
 
-//creating createProduct function
 export const createProduct = async (req, res) => {
 	try {
 		const { name, description, price, image, category } = req.body;
@@ -66,7 +64,6 @@ export const createProduct = async (req, res) => {
 	}
 };
 
-// creating the deleteProduct function
 export const deleteProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
@@ -94,7 +91,6 @@ export const deleteProduct = async (req, res) => {
 	}
 };
 
-//creating the getRecommendedProducts function
 export const getRecommendedProducts = async (req, res) => {
 	try {
 		const products = await Product.aggregate([
@@ -119,7 +115,6 @@ export const getRecommendedProducts = async (req, res) => {
 	}
 };
 
-// creating the getProductsByCategory function
 export const getProductsByCategory = async (req, res) => {
 	const { category } = req.params;
 	try {
@@ -131,7 +126,6 @@ export const getProductsByCategory = async (req, res) => {
 	}
 };
 
-// creating thr toggleFeaturedProduct function
 export const toggleFeaturedProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
@@ -149,7 +143,6 @@ export const toggleFeaturedProduct = async (req, res) => {
 	}
 };
 
-//creating the pdateFeaturedProductsCache function
 async function updateFeaturedProductsCache() {
 	try {
 		// The lean() method  is used to return plain JavaScript objects instead of full Mongoose documents. This can significantly improve performance
