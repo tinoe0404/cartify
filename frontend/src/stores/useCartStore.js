@@ -1,15 +1,6 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ShoppingCart } from "lucide-react";
-import CartItem from "../components/CartItem";
-import PeopleAlsoBought from "../components/PeopleAlsoBought";
-import OrderSummary from "../components/OrderSummary";
-import GiftCouponCard from "../components/GiftCouponCard";
-import { create } from 'zustand';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-
+import { create } from "zustand";
+import axios from "../lib/axios";
+import { toast } from "react-hot-toast";
 
 export const useCartStore = create((set, get) => ({
 	cart: [],
@@ -18,7 +9,6 @@ export const useCartStore = create((set, get) => ({
 	subtotal: 0,
 	isCouponApplied: false,
 
-	// create getMyCoupon function
 	getMyCoupon: async () => {
 		try {
 			const response = await axios.get("/coupons");
@@ -27,8 +17,6 @@ export const useCartStore = create((set, get) => ({
 			console.error("Error fetching coupon:", error);
 		}
 	},
-
-	// create applyCoupon function
 	applyCoupon: async (code) => {
 		try {
 			const response = await axios.post("/coupons/validate", { code });
@@ -39,16 +27,13 @@ export const useCartStore = create((set, get) => ({
 			toast.error(error.response?.data?.message || "Failed to apply coupon");
 		}
 	},
-
-	// create removeCoupon function
 	removeCoupon: () => {
 		set({ coupon: null, isCouponApplied: false });
 		get().calculateTotals();
 		toast.success("Coupon removed");
 	},
-	
-	// create getCartItems function
-    getCartItems: async () => {
+
+	getCartItems: async () => {
 		try {
 			const res = await axios.get("/cart");
 			set({ cart: res.data });
@@ -58,16 +43,10 @@ export const useCartStore = create((set, get) => ({
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
-
-	// create removeFromCart function
-	removeFromCart: async (productId) => {
-		await axios.delete(`/cart`, { data: { productId } });
-		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
-		get().calculateTotals();
+	clearCart: async () => {
+		set({ cart: [], coupon: null, total: 0, subtotal: 0 });
 	},
-
-    // create addToCart function 
-    addToCart: async (product) => {
+	addToCart: async (product) => {
 		try {
 			await axios.post("/cart", { productId: product._id });
 			toast.success("Product added to cart");
@@ -86,8 +65,11 @@ export const useCartStore = create((set, get) => ({
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
-
-	// create updateQuantity function
+	removeFromCart: async (productId) => {
+		await axios.delete(`/cart`, { data: { productId } });
+		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
+		get().calculateTotals();
+	},
 	updateQuantity: async (productId, quantity) => {
 		if (quantity === 0) {
 			get().removeFromCart(productId);
@@ -100,9 +82,7 @@ export const useCartStore = create((set, get) => ({
 		}));
 		get().calculateTotals();
 	},
-
-    // create calculateTotals fucntion 
-    calculateTotals: () => {
+	calculateTotals: () => {
 		const { cart, coupon } = get();
 		const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 		let total = subtotal;
@@ -114,10 +94,4 @@ export const useCartStore = create((set, get) => ({
 
 		set({ subtotal, total });
 	},
-
-	// create clearCart function
-	clearCart: async () => {
-		set({ cart: [], coupon: null, total: 0, subtotal: 0 });
-	},
-	
 }));

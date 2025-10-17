@@ -2,7 +2,6 @@ import Order from "../models/order.model.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 
-// Function to get overall analytics data
 export const getAnalyticsData = async () => {
 	const totalUsers = await User.countDocuments();
 	const totalProducts = await Product.countDocuments();
@@ -27,7 +26,6 @@ export const getAnalyticsData = async () => {
 	};
 };
 
-// Function to get all dates in a range
 export const getDailySalesData = async (startDate, endDate) => {
 	try {
 		const dailySalesData = await Order.aggregate([
@@ -65,7 +63,7 @@ export const getDailySalesData = async (startDate, endDate) => {
 			const foundData = dailySalesData.find((item) => item._id === date);
 
 			return {
-				date,
+				name: date,
 				sales: foundData?.sales || 0,
 				revenue: foundData?.revenue || 0,
 			};
@@ -75,7 +73,6 @@ export const getDailySalesData = async (startDate, endDate) => {
 	}
 };
 
-// Helper function to get all dates in a range
 function getDatesInRange(startDate, endDate) {
 	const dates = [];
 	let currentDate = new Date(startDate);

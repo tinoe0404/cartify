@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios";
 
 const stripePromise = loadStripe(
-	"pk_test_51KZYccCoOZF2UhtOwdXQl3vcizup20zqKqT9hVUIsVzsdBrhqbUI2fE0ZdEVLdZfeHjeyFXtqaNsyCJCmZWnjNZa00PzMAjlcL"
+	"pk_test_51SGfi71vbFGLiJyy8daeXrQMXW40oyA9v1mzqWBpDtXgBJHvjybaZdAnzpsSPrcLxb9BoEReUO210RCG1B1pg7wa00mQckEuex"
 );
 
 const OrderSummary = () => {
@@ -18,21 +18,19 @@ const OrderSummary = () => {
 	const formattedSavings = savings.toFixed(2);
 
 	const handlePayment = async () => {
-		const stripe = await stripePromise;
-		const res = await axios.post("/payments/create-checkout-session", {
-			products: cart,
-			couponCode: coupon ? coupon.code : null,
-		});
-
-		const session = res.data;
-		const result = await stripe.redirectToCheckout({
-			sessionId: session.id,
-		});
-
-		if (result.error) {
-			console.error("Error:", result.error);
+		try {
+			const res = await axios.post("/payments/create-checkout-session", {
+				products: cart,
+				couponCode: coupon ? coupon.code : null,
+			});
+	
+			const { url } = res.data;
+			window.location.href = url; // ✅ Redirect to Stripe Checkout
+		} catch (error) {
+			console.error("Checkout error:", error);
 		}
 	};
+	
 
 	return (
 		<motion.div
