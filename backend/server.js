@@ -33,11 +33,11 @@ app.use('/api/analytics', analyticsRoutes);
 
 // ✅ Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+	app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-	// ✅ FIXED: use '*' instead of '/*'
-	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+	// ✅ FIXED: regex wildcard for Express 5+
+	app.get(/.*/, (req, res) => {
+		res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 	});
 }
 
