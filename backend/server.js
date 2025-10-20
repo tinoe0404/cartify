@@ -17,7 +17,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Proper way to define __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -36,8 +35,8 @@ app.use('/api/analytics', analyticsRoutes);
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
-	// ✅ FIX: use '/*' instead of '*'
-	app.get('/*', (req, res) => {
+	// ✅ FIXED: use '*' instead of '/*'
+	app.get('*', (req, res) => {
 		res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 	});
 }
